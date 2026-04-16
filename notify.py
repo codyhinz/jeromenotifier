@@ -33,7 +33,11 @@ def post_to_discord(message):
 # ── YouTube ───────────────────────────────────────────────────────────────────
 def check_youtube():
     print("Checking YouTube...")
-    response = requests.get(YOUTUBE_RSS, timeout=10)
+    response = requests.get(
+        YOUTUBE_RSS,
+        headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"},
+        timeout=10
+    )
     response.raise_for_status()
 
     ns = {
