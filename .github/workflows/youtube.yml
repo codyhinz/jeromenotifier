@@ -1,4 +1,4 @@
-name: YouTube & Twitch Notifier
+name: YouTube Notifier
 
 on:
   schedule:
@@ -8,9 +8,6 @@ on:
 jobs:
   notify:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write         # Needed to commit state.json back to repo
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -25,15 +22,6 @@ jobs:
 
       - name: Run notifier
         env:
-          DISCORD_WEBHOOK:  ${{ secrets.DISCORD_WEBHOOK }}
-          TWITCH_CLIENT_ID: ${{ secrets.TWITCH_CLIENT_ID }}
-          TWITCH_SECRET:    ${{ secrets.TWITCH_SECRET }}
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
         run: python notify.py
-
-      - name: Save state back to repo
-        run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add state.json
-          git diff --cached --quiet || git commit -m "Update Twitch state"
-          git push
