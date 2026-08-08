@@ -56,7 +56,6 @@ def main():
         print("No videos found.")
         return
 
-    # First run — just save all current IDs without posting
     if not seen_ids:
         seen_ids = [v["id"] for v in videos]
         print(f"First run — saving {len(seen_ids)} video IDs without posting.")
@@ -64,14 +63,12 @@ def main():
         save_state(state)
         return
 
-    # Find any videos we haven't seen before
     new_videos = [v for v in videos if v["id"] not in seen_ids]
 
     if new_videos:
-        for video in reversed(new_videos):  # Post oldest new video first
-            print(f"New video detected: {video['title']} — posting to Discord!")
+        for video in reversed(new_videos):
+            print(f"New video: {video['title']} — posting to Discord!")
             post_to_discord(video["title"], video["url"])
-        # Update seen IDs, keep last 20 to avoid the list growing forever
         all_ids = seen_ids + [v["id"] for v in new_videos]
         state["seen_ids"] = all_ids[-20:]
     else:
