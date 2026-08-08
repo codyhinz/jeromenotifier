@@ -5,6 +5,10 @@ on:
     - cron: "*/20 * * * *"
   workflow_dispatch:
 
+concurrency:
+  group: youtube-notifier
+  cancel-in-progress: false
+
 jobs:
   notify:
     runs-on: ubuntu-latest
@@ -33,7 +37,9 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git stash
           git pull --rebase origin main
+          git stash pop
           git add state.json
           git diff --cached --quiet || git commit -m "Update YouTube state"
           git push
