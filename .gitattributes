@@ -1,0 +1,2 @@
+# One line per run; a race resolves as a union instead of conflict markers.
+state.json merge=union
